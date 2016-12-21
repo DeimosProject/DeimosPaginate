@@ -7,7 +7,7 @@ use Deimos\ORM\SelectQuery;
 class Paginate
 {
 
-    const DEFAULT_TAKE = 15;
+    protected $defaultTake = 15;
 
     /**
      * @var SelectQuery
@@ -48,7 +48,7 @@ class Paginate
         $this->selectQuery = null;
         $this->storage     = null;
         $this->itemCount   = null;
-        $this->take        = self::DEFAULT_TAKE;
+        $this->take        = $this->defaultTake;
         $this->skip        = null;
     }
 
