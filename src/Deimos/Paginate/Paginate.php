@@ -106,7 +106,7 @@ class Paginate
     {
         $this->reset();
         $this->loaded      = true;
-        $this->selectQuery = $selectQuery;
+        $this->selectQuery = clone $selectQuery;
 
         return $this;
     }
