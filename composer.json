@@ -8,7 +8,7 @@
     }
   ],
   "require": {
-    "deimos/paginate": "~1.0"
+    "deimos/orm": "~0.1"
   },
   "autoload": {
     "psr-4": {
