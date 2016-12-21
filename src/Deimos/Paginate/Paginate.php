@@ -7,6 +7,9 @@ use Deimos\ORM\SelectQuery;
 class Paginate
 {
 
+    /**
+     * @var int
+     */
     protected $defaultTake = 15;
 
     /**
