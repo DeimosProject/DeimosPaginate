@@ -36,7 +36,7 @@ class Paginate extends Pager
             return $this->slice();
         }
 
-        return (clone $this->selectQuery)
+        return $this->selectQuery()
             ->take($this->take)
             ->skip($this->skip)
             ->find($asObject);
@@ -88,7 +88,7 @@ class Paginate extends Pager
     {
         return $this->selectQuery === null
             ? count($this->storage)
-            : (clone $this->selectQuery)->count();
+            : $this->selectQuery()->count();
     }
 
     /**

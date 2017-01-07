@@ -20,4 +20,12 @@ trait ExtOrm
         $this->selectQuery = $query;
     }
 
+    /**
+     * @return SelectQuery
+     */
+    protected function selectQuery()
+    {
+        return clone $this->selectQuery;
+    }
+
 }
