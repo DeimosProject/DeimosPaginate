@@ -56,16 +56,16 @@ class Paginate
     }
 
     /**
-     * @param bool $asArray
+     * @param bool $asObject
      *
      * @return array
-     * @throws \Exception
+     * @throws \InvalidArgumentException
      */
-    public function currentItems($asArray = false)
+    public function currentItems($asObject = true)
     {
         if (!$this->loaded)
         {
-            throw new \Exception('Data is not load');
+            throw new \InvalidArgumentException('Data is not load');
         }
 
         if ($this->selectQuery)
@@ -73,7 +73,7 @@ class Paginate
             $storage = $this->selectQuery
                 ->take($this->take)
                 ->skip($this->skip)
-                ->find($asArray);
+                ->find($asObject);
         }
         else
         {
