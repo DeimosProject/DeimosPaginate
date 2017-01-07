@@ -8,7 +8,7 @@
     }
   ],
   "require": {
-    "deimos/orm": "~0.4"
+    "deimos/orm": "dev-master"
   },
   "require-dev": {
     "phpunit/phpunit": "~5.7",
