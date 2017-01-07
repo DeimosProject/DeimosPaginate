@@ -72,6 +72,16 @@ class Paginate extends Pager
     }
 
     /**
+     * @param SelectQuery $selectQuery
+     *
+     * @return $this
+     */
+    public function queryClone(SelectQuery $selectQuery)
+    {
+        return $this->queryPager(clone $selectQuery);
+    }
+
+    /**
      * @return int
      */
     protected function count()
