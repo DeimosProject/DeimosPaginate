@@ -68,16 +68,16 @@ class Paginate
             throw new \InvalidArgumentException('Data is not load');
         }
 
-        if ($this->selectQuery)
+        if ($this->selectQuery === null)
+        {
+            $storage = array_slice($this->storage, $this->skip, $this->take);
+        }
+        else
         {
             $storage = $this->selectQuery
                 ->take($this->take)
                 ->skip($this->skip)
                 ->find($asObject);
-        }
-        else
-        {
-            $storage = array_slice($this->storage, $this->skip, $this->take);
         }
 
         return $storage;
@@ -118,13 +118,13 @@ class Paginate
     {
         if (!$this->itemCount)
         {
-            if ($this->selectQuery)
+            if ($this->selectQuery === null)
             {
-                $this->itemCount = $this->selectQuery->count();
+                $this->itemCount = count($this->storage);
             }
             else
             {
-                $this->itemCount = count($this->storage);
+                $this->itemCount = $this->selectQuery->count();
             }
         }
 
