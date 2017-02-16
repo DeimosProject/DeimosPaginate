@@ -2,7 +2,7 @@
 
 namespace Test\Paginate;
 
-class PaginateTest extends \PHPUnit_Framework_TestCase
+class PaginateTest extends \PHPUnit\Framework\TestCase
 {
 
     public function testEntity()
