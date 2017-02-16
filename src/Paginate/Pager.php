@@ -8,7 +8,7 @@ abstract class Pager
     /**
      * @var int
      */
-    protected $defaultTake = 15;
+    protected $defaultTake = 50;
 
     /**
      * @var array
@@ -23,12 +23,12 @@ abstract class Pager
     /**
      * @var int
      */
-    protected $take;
+    protected $limit;
 
     /**
      * @var int
      */
-    protected $skip;
+    protected $page;
 
     /**
      * @var bool
@@ -38,17 +38,13 @@ abstract class Pager
     /**
      * reset pager
      */
-
-    /**
-     * reset pager
-     */
     protected function reset()
     {
         $this->loaded    = false;
         $this->storage   = null;
         $this->itemCount = null;
-        $this->take      = $this->defaultTake;
-        $this->skip      = null;
+        $this->limit = $this->defaultTake;
+        $this->page = 1;
     }
 
     /**
@@ -56,7 +52,7 @@ abstract class Pager
      */
     protected function slice()
     {
-        return array_slice($this->storage, $this->skip, $this->take);
+        return array_slice($this->storage, $this->offset(), $this->limit);
     }
 
     /**
@@ -69,7 +65,7 @@ abstract class Pager
      */
     protected function isLoaded()
     {
-        return !!$this->loaded;
+        return $this->loaded === true;
     }
 
     /**
@@ -77,7 +73,7 @@ abstract class Pager
      */
     public function pageCount()
     {
-        return (int)ceil($this->itemCount() / $this->take);
+        return (int)ceil($this->itemCount() / $this->limit);
     }
 
     /**
@@ -95,7 +91,12 @@ abstract class Pager
      */
     public function currentPage()
     {
-        return (int)($this->skip / $this->take + 1);
+        if (!$this->offset())
+        {
+            return 1;
+        }
+
+        return (int)($this->offset() / $this->limit + 1);
     }
 
     /**
@@ -105,17 +106,7 @@ abstract class Pager
      */
     public function page($page)
     {
-        return $this->skip($this->pageCount() * ($page - 1));
-    }
-
-    /**
-     * @param int $limit
-     *
-     * @return static
-     */
-    public function take($limit)
-    {
-        $this->take = $limit;
+        $this->page = abs($page);
 
         return $this;
     }
@@ -127,29 +118,17 @@ abstract class Pager
      */
     public function limit($limit)
     {
-        return $this->take($limit);
-    }
-
-    /**
-     * @param int $offset
-     *
-     * @return static
-     */
-    public function skip($offset)
-    {
-        $this->skip = $offset;
+        $this->limit = $limit;
 
         return $this;
     }
 
     /**
-     * @param int $offset
-     *
-     * @return static
+     * @return int
      */
-    public function offset($offset)
+    protected function offset()
     {
-        return $this->skip($offset);
+        return ($this->page - 1) * $this->limit;
     }
 
 }

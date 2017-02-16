@@ -2,12 +2,31 @@
 
 namespace Deimos\Paginate;
 
-use Deimos\ORM\SelectQuery;
+use Deimos\ORM\Queries\Query;
 
 class Paginate extends Pager
 {
 
-    use ExtOrm;
+    /**
+     * @var Query
+     */
+    protected $query;
+
+    /**
+     * @param Query $query
+     */
+    protected function setQuery($query)
+    {
+        $this->query = $query;
+    }
+
+    /**
+     * @return Query
+     */
+    protected function query()
+    {
+        return clone $this->query;
+    }
 
     /**
      * reset pager
@@ -15,7 +34,7 @@ class Paginate extends Pager
     protected function reset()
     {
         parent::reset();
-        $this->setSelectQuery(null);
+        $this->setQuery(null);
     }
 
     /**
@@ -26,19 +45,19 @@ class Paginate extends Pager
      */
     public function currentItems($asObject = true)
     {
-        if (!$this->loaded)
+        if (!$this->isLoaded())
         {
             throw new \InvalidArgumentException('Data is not load');
         }
 
-        if ($this->selectQuery === null)
+        if ($this->query === null)
         {
             return $this->slice();
         }
 
-        return $this->selectQuery()
-            ->take($this->take)
-            ->skip($this->skip)
+        return $this->query()
+            ->limit($this->limit)
+            ->offset($this->offset())
             ->find($asObject);
     }
 
@@ -57,14 +76,14 @@ class Paginate extends Pager
     }
 
     /**
-     * @param SelectQuery $selectQuery
+     * @param Query $query
      *
      * @return $this
      */
-    public function queryPager(SelectQuery $selectQuery)
+    public function queryPager(Query $query)
     {
         $this->reset();
-        $this->setSelectQuery($selectQuery);
+        $this->setQuery($query);
 
         $this->loaded = true;
 
@@ -72,13 +91,13 @@ class Paginate extends Pager
     }
 
     /**
-     * @param SelectQuery $selectQuery
+     * @param Query $query
      *
      * @return $this
      */
-    public function queryClone(SelectQuery $selectQuery)
+    protected function queryClone(Query $query)
     {
-        return $this->queryPager(clone $selectQuery);
+        return $this->queryPager(clone $query);
     }
 
     /**
@@ -86,9 +105,12 @@ class Paginate extends Pager
      */
     protected function count()
     {
-        return $this->selectQuery === null
-            ? count($this->storage)
-            : $this->selectQuery()->count();
+        if ($this->query)
+        {
+            return $this->query()->count();
+        }
+
+        return count($this->storage);
     }
 
     /**
