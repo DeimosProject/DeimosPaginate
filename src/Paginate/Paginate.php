@@ -91,16 +91,6 @@ class Paginate extends Pager
     }
 
     /**
-     * @param Query $query
-     *
-     * @return $this
-     */
-    protected function queryClone(Query $query)
-    {
-        return $this->queryPager(clone $query);
-    }
-
-    /**
      * @return int
      */
     protected function count()
