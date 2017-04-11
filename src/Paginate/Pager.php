@@ -8,7 +8,7 @@ abstract class Pager
     /**
      * @var int
      */
-    protected $defaultTake = 50;
+    protected $defaultLimit = 50;
 
     /**
      * @var array
@@ -43,8 +43,8 @@ abstract class Pager
         $this->loaded    = false;
         $this->storage   = null;
         $this->itemCount = null;
-        $this->limit = $this->defaultTake;
-        $this->page = 1;
+        $this->limit     = $this->defaultLimit;
+        $this->page      = 1;
     }
 
     /**

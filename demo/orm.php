@@ -2,15 +2,16 @@
 
 include_once dirname(__DIR__) . '/vendor/autoload.php';
 
-$builder = new \Deimos\Builder\Builder();
+$helper = new \Deimos\Helper\Helper();
 
-$db  = new \Deimos\Database\Database(new \Deimos\Config\ConfigObject($builder, [
+$db = new \Deimos\Database\Database(new \Deimos\Slice\Slice($helper, [
     'adapter'  => 'mysql',
     'database' => 'test',
     'username' => 'root',
     'password' => 'root'
 ]));
-$orm = new \Deimos\ORM\ORM($builder, $db);
+
+$orm = new \Deimos\ORM\ORM($helper, $db);
 
 $userQuery = $orm->repository('user');
 
