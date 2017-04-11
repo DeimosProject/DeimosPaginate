@@ -72,16 +72,16 @@ class PaginateTest extends \PHPUnit\Framework\TestCase
     public function testQuery()
     {
 
-        $builder = new \Deimos\Builder\Builder();
+        $helper = new \Deimos\Helper\Helper();
 
-        $db  = new \Deimos\Database\Database(new \Deimos\Config\ConfigObject($builder, [
+        $db  = new \Deimos\Database\Database(new \Deimos\Slice\Slice($helper, [
             'adapter'  => 'sqlite',
             'path' => ':memory:',
         ]));
 
         $db->exec('CREATE TABLE IF NOT EXISTS files (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,name TEXT NOT NULL)');
 
-        $orm = new \Deimos\ORM\ORM($builder, $db);
+        $orm = new \Deimos\ORM\ORM($helper, $db);
 
         foreach (range($this->start, $this->getRangeHigh($this->start, $this->count)) as $item)
         {
