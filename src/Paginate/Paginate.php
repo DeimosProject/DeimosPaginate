@@ -15,7 +15,7 @@ class Paginate extends Pager
     protected function reset()
     {
         parent::reset();
-        $this->setSelectQuery(null);
+        $this->selectQuery = null;
     }
 
     /**
